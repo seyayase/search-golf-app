@@ -61,7 +61,7 @@ export default class Home extends React.Component {
         duration: this.state.duration,
       };
   
-      const response = await axios.get("https://l1kwik11ne.execute-api.ap-northeast-1.amazonaws.com/production/golf-courses", { params: params });
+      const response = await axios.get(" https://oqrvakah98.execute-api.ap-northeast-1.amazonaws.com/production/golf-courses", { params: params });
       this.setState({ planCount: response.data.count, plans: response.data.plans});
       console.log(response.data.count);
       console.log(response.data.plans);
