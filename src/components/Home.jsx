@@ -12,6 +12,7 @@ import format from 'date-fns/format';
 import axios from 'axios';
 
 import Result from "./Result";
+import Loading from "./Loading";
 
 const Today = new Date();
 registerLocale("ja", ja);
@@ -26,7 +27,9 @@ export default class Home extends React.Component {
       departure: '1',
       duration: '90',
       plans: [],
-      planCount: 0
+      planCount: 0,
+      error: null,
+      loading: false,
     }
   }
 
@@ -47,19 +50,25 @@ export default class Home extends React.Component {
   }
 
   handleSubmit = async (e) => {
-    e.preventDefault();
+    try {
+      e.preventDefault();
+      this.setState({ loading: true });
 
-    let params = {
-      date: format(this.state.date, "yyyymmdd"),
-      budget: this.state.budget,
-      departure: this.state.departure,
-      duration: this.state.duration,
-    };
-
-    const response = await axios.get("https://l1kwik11ne.execute-api.ap-northeast-1.amazonaws.com/production/golf-courses", { params: params });
-    this.setState({ planCount: response.data.count, plans: response.data.plans});
-    console.log(response.data.count);
-    console.log(response.data.plans);
+      let params = {
+        date: format(this.state.date, "yyyymmdd"),
+        budget: this.state.budget,
+        departure: this.state.departure,
+        duration: this.state.duration,
+      };
+  
+      const response = await axios.get("https://l1kwik11ne.execute-api.ap-northeast-1.amazonaws.com/production/golf-courses", { params: params });
+      this.setState({ planCount: response.data.count, plans: response.data.plans});
+      console.log(response.data.count);
+      console.log(response.data.plans);
+      this.setState({ loading: false })
+    } catch (error) {
+      this.setState({ error: error })
+    }
   }
 
   render() {
@@ -129,9 +138,15 @@ export default class Home extends React.Component {
               </button>
             </div>
           </form>
+
+          <Loading
+            loading={this.state.loading}
+          />
+
           <Result
             plans={this.state.plans}
             planCount={this.state.planCount}
+            error={this.setState.error}
           />
         </div>
       </div>
