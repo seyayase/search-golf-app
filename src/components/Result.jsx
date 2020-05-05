@@ -1,7 +1,20 @@
 import React from "react";
 import "./Common.css";
 
-const Result = ({plans}) => {
+const Result = ({ plans, planCount }) => {
+
+  if (planCount === 0) {
+    return (
+      <div className="wrapper">
+        <div className="ui orange message">
+          <div className="header">
+            ゴルフ場が見つかりませんでした。条件を変更して再度検索してください。
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   if (!plans) {
     return <div></div>;
   }

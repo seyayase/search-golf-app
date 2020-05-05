@@ -24,7 +24,9 @@ export default class Home extends React.Component {
       date: addDays(new Date(), 14),
       budget: '12000',
       departure: '1',
-      duration: '90'
+      duration: '90',
+      plans: [],
+      planCount: 0
     }
   }
 
@@ -55,7 +57,7 @@ export default class Home extends React.Component {
     };
 
     const response = await axios.get("https://l1kwik11ne.execute-api.ap-northeast-1.amazonaws.com/production/golf-courses", { params: params });
-    this.setState({ count: response.data.count, plans: response.data.plans});
+    this.setState({ planCount: response.data.count, plans: response.data.plans});
     console.log(response.data.count);
     console.log(response.data.plans);
   }
@@ -129,6 +131,7 @@ export default class Home extends React.Component {
           </form>
           <Result
             plans={this.state.plans}
+            planCount={this.state.planCount}
           />
         </div>
       </div>
